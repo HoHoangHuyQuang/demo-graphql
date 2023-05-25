@@ -5,22 +5,23 @@ type User{
 	accounts: [Account]
 }
 
-type Mutation {
-  createUser(fullname: String!, age: Int!): User
-  updateUser(id: ID!, fullname: String!, age: Int!, accounts: [Account]): User
-  deleteUser(id: ID!): ID
-}
-
-type Query{
-	users: [User]
-	userByid(id: ID!)
-	
-}
-
 type Account{
 	id: ID!
 	username: String!
 	password: String!
 	isLocked: Boolean
+	owner: User
+}
+
+type Mutation {
+  createUser(fullname: String!, age: Int!): User
+  updateUser(id: ID!, fullname: String!, age: Int!, accountIds: [String]): User
+  deleteUser(id: ID!): ID
+}
+
+type Query{
+	users: [User]
+	
 	
 }
+

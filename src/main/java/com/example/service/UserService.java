@@ -2,7 +2,7 @@ package com.example.service;
 
 import java.util.List;
 
-import org.springframework.graphql.client.HttpGraphQlClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Value
 public class UserService {
-	
+	@Autowired
 	private UserReposirory userReposirory;	
 	
 	@QueryMapping(name = "users")
