@@ -12,9 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 @Value
-public class AccountService {
+public class AccountService  {
 	@Autowired
 	private AccountRepository accountRepository;
 	
-	
+
 }

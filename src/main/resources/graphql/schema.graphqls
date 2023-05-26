@@ -12,16 +12,29 @@ type Account{
 	isLocked: Boolean
 	owner: User
 }
+input AccountInput{	
+	id: ID!
+	username: String
+	password: String
+	isLocked: Boolean
+	
+}
+
+input UserInput{
+	id: ID!	
+	fullname: String
+	age: Int	
+	
+}
 
 type Mutation {
   createUser(fullname: String!, age: Int!): User
-  updateUser(id: ID!, fullname: String!, age: Int!, accountIds: [String]): User
+  updateUser(id: ID!, fullname: String!, age: Int!, account: [AccountInput]): User
   deleteUser(id: ID!): ID
 }
 
 type Query{
 	users: [User]
-	
 	
 }
 
