@@ -49,10 +49,6 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<>("Illegal argument or state: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 
-	@ExceptionHandler(AuthenticationException.class)
-	public ResponseEntity<String> handleUnauthorizeException(Exception ex) {
-		return new ResponseEntity<>("Unauthorized: " + ex.getMessage(), HttpStatus.UNAUTHORIZED);
-	}
 
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<String> handleException(Exception ex) {

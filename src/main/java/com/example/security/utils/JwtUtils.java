@@ -1,4 +1,4 @@
-package com.example.util;
+package com.example.security.utils;
 
 import java.security.Key;
 import java.util.Date;
