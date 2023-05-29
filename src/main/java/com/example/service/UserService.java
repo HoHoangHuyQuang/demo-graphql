@@ -1,5 +1,7 @@
 package com.example.service;
 
+
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,11 +38,11 @@ public class UserService {
 
 	@SchemaMapping
 	public List<Account> getAccount(long userId) {
-		User user = userReposirory.findById(userId).orElse(null);
-		if(user == null) {
+		User u = userReposirory.findById(userId).orElse(null);
+		if(u == null) {
 			return null;
 		}
-		return user.getAccounts();
+		return u.getAccounts();
 	}
 	@MutationMapping
 	public User createUser(@Argument String fullname, @Argument int age) {
