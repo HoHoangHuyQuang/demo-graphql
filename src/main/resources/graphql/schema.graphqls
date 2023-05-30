@@ -23,8 +23,7 @@ input AccountInput{
 input UserInput{
 	id: ID!	
 	fullname: String
-	age: Int	
-	
+	age: Int
 }
 
 type Mutation {
