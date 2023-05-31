@@ -3,8 +3,6 @@ package com.example.exception;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.naming.AuthenticationException;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -49,6 +47,10 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<>("Illegal argument or state: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 
+	@ExceptionHandler(ResourceNotFoundException.class)
+	public ResponseEntity<String> handleResourceNotFoundException(Exception ex) {
+		return new ResponseEntity<>("Resource not found: " + ex.getMessage(), HttpStatus.NOT_FOUND);
+	}
 
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<String> handleException(Exception ex) {
