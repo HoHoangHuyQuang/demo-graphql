@@ -6,7 +6,6 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
-import org.springframework.web.util.WebUtils;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -15,8 +14,6 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 
 @Component
@@ -30,15 +27,6 @@ public class JwtUtils {
 
 	@Value("${app.jwtExpirationMs}")
 	private int jwtExpirationMs;
-
-	public String getBearerToken(HttpServletRequest request) {
-		Cookie cookie = WebUtils.getCookie(request, jwtCookieName);
-		if (cookie != null) {
-			return cookie.getValue();
-		} else {
-			return null;
-		}
-	}
 
 	private Key key() {
 		return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));

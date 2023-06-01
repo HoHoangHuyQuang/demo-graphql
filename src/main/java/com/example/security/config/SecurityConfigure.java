@@ -21,20 +21,22 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfigure {
 	@Autowired
 	private final AccountService accountService;
-	
-	 @Bean
-	  public DaoAuthenticationProvider authenticationProvider() {
-	      DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-	       
-	      authProvider.setUserDetailsService(accountService);
-	      authProvider.setPasswordEncoder(passwordEncoder());
-	   
-	      return authProvider;
-	  }
-	  @Bean
-	  public PasswordEncoder passwordEncoder() {
-	    return new BCryptPasswordEncoder();
-	  }
+
+	@Bean
+	public DaoAuthenticationProvider authenticationProvider() {
+		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+
+		authProvider.setUserDetailsService(accountService);
+		authProvider.setPasswordEncoder(passwordEncoder());
+
+		return authProvider;
+	}
+
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.csrf(csrf -> csrf.disable())
