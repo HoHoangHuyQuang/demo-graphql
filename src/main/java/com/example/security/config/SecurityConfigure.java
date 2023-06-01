@@ -11,16 +11,20 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.example.security.utils.AuthEntryPoint;
+import com.example.security.utils.AuthTokenFilter;
 import com.example.service.AccountService;
 
 import lombok.RequiredArgsConstructor;
-
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 @RequiredArgsConstructor
 @Configurable
 @EnableWebSecurity
 public class SecurityConfigure {
 	@Autowired
 	private final AccountService accountService;
+	@Autowired
+	private AuthEntryPoint unauthorizedHandler;
 
 	@Bean
 	public DaoAuthenticationProvider authenticationProvider() {
@@ -40,14 +44,17 @@ public class SecurityConfigure {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.csrf(csrf -> csrf.disable())
-				.exceptionHandling(null)
+				.exceptionHandling(ex -> ex.authenticationEntryPoint(unauthorizedHandler))
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/**")
-						.permitAll()
-						.requestMatchers("/api/test/**")
-						.permitAll()
-						.anyRequest()
-						.authenticated());
+				.authorizeHttpRequests(
+						auth -> auth.requestMatchers("/api/auth/**")
+								.permitAll()
+								.requestMatchers("/api/test/**")
+								.permitAll()
+								.anyRequest()
+								.authenticated())
+				.authenticationProvider(authenticationProvider())
+				.addFilterBefore(new AuthTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 		return http.build();
 	}
 }
