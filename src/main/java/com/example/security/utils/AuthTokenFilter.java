@@ -3,11 +3,14 @@ package com.example.security.utils;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.example.service.AccountService;
@@ -28,7 +31,9 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
+		
 		final String requestTokenHeader = request.getHeader("Authorization");
+		
 		if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
 			String jwtToken = requestTokenHeader.substring(7);
 			try {
@@ -43,8 +48,12 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 					SecurityContextHolder.getContext().setAuthentication(authentication);
 
 				}
+				else {
+					throw new AccessDeniedException("Invalid jwt token");
+				}
 			} catch (Exception e) {
-				// TODO: handle exception
+				e.printStackTrace();
+				throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 			filterChain.doFilter(request, response);
 		}
